@@ -10,16 +10,16 @@ import (
 
 // ParseImage converts an image into a grid representation and identifies the start and end points
 func ParseImage(img image.Image) ([][]int, Point, Point, error) {
-	bounds := img.Bounds() // Get the dimensions of the image
+	bounds := img.Bounds()
 	width, height := bounds.Max.X, bounds.Max.Y
 
-	grid := make([][]int, height) // Create a grid with height rows
+	grid := make([][]int, height)
 	for i := range grid {
-		grid[i] = make([]int, width) // Each row has a width number of columns
+		grid[i] = make([]int, width)
 	}
 
-	var start, end Point // Initialize start and end points
-	foundStart, foundEnd := false, false // Flags to check if start/end points are found
+	var start, end Point
+	foundStart, foundEnd := false, false
 
 	// Loop through each pixel in the image
 	for y := 0; y < height; y++ {
@@ -56,44 +56,42 @@ func ParseImage(img image.Image) ([][]int, Point, Point, error) {
 func PrintGrid(grid [][]int) {
 	for y := range grid {
 		for x := range grid[y] {
-			fmt.Print(grid[y][x], " ") // Print each cell in the grid
+			fmt.Print(grid[y][x], " ")
 		}
-		fmt.Println() // New line for each row
+		fmt.Println()
 	}
 }
 
-// PrintPath outputs the found path to the console
 func PrintPath(path []Point) {
 	for _, p := range path {
-		fmt.Printf("(%d, %d) -> ", p.X, p.Y) // Print each point in the path
+		fmt.Printf("(%d, %d) -> ", p.X, p.Y)
 	}
-	fmt.Println("Reached the goal!") // Indicate the goal has been reached
+	fmt.Println("Reached the goal!")
 }
 
 // DrawPathOnImage overlays the found path on the original image and saves it as a new file
 func DrawPathOnImage(img image.Image, path []Point) {
-	bounds := img.Bounds() // Get the bounds of the original image
-	newImg := image.NewRGBA(bounds) // Create a new RGBA image to draw on
+	bounds := img.Bounds()
+	newImg := image.NewRGBA(bounds)
 
-	// Copy original image to the new image
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			newImg.Set(x, y, img.At(x, y)) // Set each pixel in the new image
+			newImg.Set(x, y, img.At(x, y))
 		}
 	}
 
-	yellow := color.RGBA{255, 255, 0, 255} // Define the color yellow for the path
+	yellow := color.RGBA{255, 255, 0, 255}
 	for _, p := range path {
-		newImg.Set(p.X, p.Y, yellow) // Set the path points to yellow in the new image
+		newImg.Set(p.X, p.Y, yellow)
 	}
 
-	outFile, err := os.Create("./output/output.png") // Create output file
+	outFile, err := os.Create("./output/output.png")
 	if err != nil {
 		fmt.Println("Error while saving the new image:", err)
 		return
 	}
-	defer outFile.Close() // Ensure the file is closed after writing
+	defer outFile.Close()
 
-	png.Encode(outFile, newImg) // Encode and save the new image
-	fmt.Println("Path successfully drawn and saved as 'output.png'.") // Confirmation message
+	png.Encode(outFile, newImg)
+	fmt.Println("Path successfully drawn and saved as 'output.png'.")
 }

@@ -19,10 +19,9 @@ var directions = [][2]int{
 
 // GenerateMaze creates a new maze of the specified width and height
 func GenerateMaze(width, height int) [][]Cell {
-    // Create a 2D slice to represent the maze
     maze := make([][]Cell, height)
     for y := range maze {
-        maze[y] = make([]Cell, width) // Initialize each row
+        maze[y] = make([]Cell, width)
     }
 
     // Fill the maze with walls
@@ -45,7 +44,7 @@ func GenerateMaze(width, height int) [][]Cell {
     maze[startY][startX] = Cell{IsWall: false}
     maze[height-2][width-2] = Cell{IsWall: false} // Set the end cell to open
 
-    return maze // Return the generated maze
+    return maze
 }
 
 // visit recursively visits cells in the maze to create paths
@@ -66,7 +65,7 @@ func visit(maze [][]Cell, x, y int) {
                 maze[y+direction[1]][x+direction[0]] = Cell{IsWall: false}
                 maze[ny][nx] = Cell{IsWall: false}
 
-                visit(maze, nx, ny) // Recursively visit the next cell
+                visit(maze, nx, ny)
             }
         }
     }

@@ -6,10 +6,10 @@ import (
 )
 
 const (
-	EMPTY = 0 // Represents an empty cell
-	WALL  = 1 // Represents a wall cell
-	START = 2 // Represents the start point
-	END   = 3 // Represents the end point
+	EMPTY = 0
+	WALL  = 1
+	START = 2
+	END   = 3
 )
 
 // Directions for movement in the grid (up, right, down, left)
@@ -22,27 +22,27 @@ func manhattanDistance(p1, p2 Point) int {
 
 // FindPath implements the A* pathfinding algorithm
 func FindPath(grid [][]int, start, end Point) []Point {
-	openSet := &PriorityQueue{} // Priority queue for the open set of nodes
-	heap.Init(openSet)           // Initialize the priority queue
-	closedSet := make(map[Point]bool) // Set to track closed nodes
+	openSet := &PriorityQueue{}
+	heap.Init(openSet)
+	closedSet := make(map[Point]bool)
 
 	// Create the start node
 	startNode := &Node{Point: start, G: 0, H: manhattanDistance(start, end)}
 	startNode.F = startNode.G + startNode.H // Calculate F score
-	heap.Push(openSet, startNode)            // Push start node to open set
+	heap.Push(openSet, startNode)
 
 	// Loop until there are nodes in the open set
 	for openSet.Len() > 0 {
-		current := heap.Pop(openSet).(*Node) // Get the node with the lowest F score
+		current := heap.Pop(openSet).(*Node)
 
 		// Check if we've reached the end point
 		if current.Point == end {
 			var path []Point
 			// Construct the path by backtracking from the end node to the start node
 			for node := current; node != nil; node = node.Parent {
-				path = append([]Point{node.Point}, path...) // Prepend the current point to the path
+				path = append([]Point{node.Point}, path...)
 			}
-			return path // Return the found path
+			return path
 		}
 
 		closedSet[current.Point] = true // Mark the current node as closed
