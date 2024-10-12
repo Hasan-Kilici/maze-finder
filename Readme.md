@@ -39,8 +39,9 @@ Key Features
 
 ## A* Algorithm Pseudocode
 
-1.Initialize the open set with the start node.
-2.While the open set is not empty:
+- 1.Initialize the open set with the start node.
+
+- 2.While the open set is not empty:
     - Get the node with the lowest f score (where f = g + h).
     - If the current node is the goal, reconstruct the path.
     - Otherwise, move it from the open set to the closed set.
